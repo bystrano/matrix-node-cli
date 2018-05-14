@@ -1,0 +1,22 @@
+* matrix-node-cli
+
+  A command-line interface for the matrix.org communication network. Based on
+  [[https://github.com/matrix-org/matrix-js-sdk][the official matrix.org js SDK]].
+
+** TODO the =send= command
+
+   Example usage :
+
+   #+BEGIN_SRC shell
+     matrix-node-cli --user=USERNAME --password=PASSWORD send <room> <message>
+   #+END_SRC
+
+*** TODO Use E2E
+
+** TODO Configuration
+
+*** TODO Set default user and password in config file
+
+**** TODO Multiple aliased accounts ?
+
+*** TODO Allow encrypted password storage

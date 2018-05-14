@@ -1,0 +1,24 @@
+{
+  "name": "matrix-node-cli",
+  "version": "0.0.1",
+  "description": "A command-line interface for the matrix.org communication network.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bystrano/matrix-node-cli.git"
+  },
+  "keywords": [
+    "matrix",
+    "messaging",
+    "cli"
+  ],
+  "author": "bystrano",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/bystrano/matrix-node-cli/issues"
+  },
+  "homepage": "https://github.com/bystrano/matrix-node-cli#readme"
+}

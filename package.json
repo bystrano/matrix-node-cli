@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/bystrano/matrix-node-cli/issues"
   },
-  "homepage": "https://github.com/bystrano/matrix-node-cli#readme"
+  "homepage": "https://github.com/bystrano/matrix-node-cli#readme",
+  "dependencies": {
+    "commander": "^2.15.1"
+  }
 }

@@ -28,7 +28,7 @@ program
     .option('-u --user <username>', 'matrix user')
     .option('-p --password <password>', 'matrix password')
     .option('-s --server <server>', 'matrix server (defaults to https://matrix.org)')
-    .option('-e --encrypted', 'Enable end-to-end encryption');
+    .option('-e --encrypted', 'Enable end-to-end encryption (experimental)');
 
 program
     .command('send <room> <message>')

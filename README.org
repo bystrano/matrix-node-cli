@@ -27,7 +27,7 @@
        -u --user <username>      matrix user
        -p --password <password>  matrix password
        -s --server <server>      matrix server (defaults to https://matrix.org)
-       -e --encrypted            Enable end-to-end encryption
+       -e --encrypted            Enable end-to-end encryption (experimental)
        -h, --help                output usage information
 
      Commands:

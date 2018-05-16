@@ -66,10 +66,26 @@ function getOptions() {
 function sendCommand(room, msg) {
 
     getOptions().then(function (options) {
+        // console.log(options);
+        // console.log('send ' + msg + ' to ' + room);
 
-        console.log(options);
-        console.log('send ' + msg + ' to ' + room);
+        var sdk = require("matrix-js-sdk");
 
-        return options;
+        sdk.createClient(options.server)
+            .loginWithPassword(options.user, options.password, function (err, res) {
+                // console.log("On login: Err %j, res %j", err, res);
+                if (err) {
+                    console.error(err.toString());
+                    return;
+                }
+
+                var authedClient = sdk.createClient({
+                    baseUrl: options.server,
+                    accessToken: res.access_token,
+                    userId: res.user_id
+                });
+
+                authedClient.sendTextMessage(room, msg);
+            });
     });
 }

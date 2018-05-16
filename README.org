@@ -3,20 +3,46 @@
   A command-line interface for the matrix.org communication network. Based on
   [[https://github.com/matrix-org/matrix-js-sdk][the official matrix.org js SDK]].
 
-** TODO the =send= command
+** Installation
 
-   Example usage :
+   You can install this package using [[https://www.npmjs.com/][npm]].
+
+   Clone this repository and run =npm install -g= :
 
    #+BEGIN_SRC shell
-     matrix-node-cli --server https://matrix.org --user=USERNAME --password=PASSWORD send <room> <message>
+     git clone https://github.com/bystrano/matrix-node-cli.git
+     cd matrix-node-cli
+     npm install -g
    #+END_SRC
 
-*** TODO Use E2E
+** Usage
 
-** TODO Configuration
+   #+BEGIN_SRC fundamental
 
-*** TODO Set default user and password in config file
+     Usage: matrix-node-cli [options] [command]
 
-**** TODO Multiple aliased accounts ?
+     Options:
 
-*** TODO Allow encrypted password storage
+       -V, --version             output the version number
+       -u --user <username>      matrix user
+       -p --password <password>  matrix password
+       -s --server <server>      matrix server (defaults to https://matrix.org)
+       -e --encrypted            Enable end-to-end encryption
+       -h, --help                output usage information
+
+     Commands:
+
+       send <room> <message>     Send a message to a room
+
+   #+END_SRC
+
+   The username and the password can also be input interactively.
+
+** Roadmap
+*** TODO Configuration
+
+**** TODO Set default user and password in config file
+
+***** TODO Multiple aliased accounts ?
+
+**** TODO Allow encrypted password storage

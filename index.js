@@ -25,10 +25,10 @@ const program = require('commander');
 
 program
     .version('0.1.0')
-    .option('-u --user <username>', 'Specify the matrix user')
-    .option('-p --password <password>', 'Specify the matrix password')
-    .option('-s --server <server>', 'Specify the matrix server')
-    .option('-e --encrypted', 'Use end-to-end encryption');
+    .option('-u --user <username>', 'matrix user')
+    .option('-p --password <password>', 'matrix password')
+    .option('-s --server <server>', 'matrix server (defaults to https://matrix.org)')
+    .option('-e --encrypted', 'Enable end-to-end encryption');
 
 program
     .command('send <room> <message>')
@@ -70,7 +70,7 @@ function getOptions() {
         }
 
         if (options.server === undefined) {
-            options.server = yield prompt('server: ');
+            options.server = 'https://matrix.org';
         }
 
         process.stdin.pause();

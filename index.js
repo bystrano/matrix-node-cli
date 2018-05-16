@@ -2,8 +2,21 @@
 
 "use strict";
 
-// Load the crypto library
+
+/**
+ * Initialization
+ */
+const fs = require('fs');
+
 global.Olm = require('olm');
+
+const tmpDir = '.matrix-localstorage';
+
+mkdirIfNotExists(tmpDir);
+
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage(tmpDir);
+
 
 /**
  * Parse the CLI arguments and dispatch the commands.
@@ -11,10 +24,11 @@ global.Olm = require('olm');
 const program = require('commander');
 
 program
-    .version('0.0.1')
+    .version('0.1.0')
     .option('-u --user <username>', 'Specify the matrix user')
     .option('-p --password <password>', 'Specify the matrix password')
-    .option('-s --server <server>', 'Specify the matrix server');
+    .option('-s --server <server>', 'Specify the matrix server')
+    .option('-e --encrypted', 'Use end-to-end encryption');
 
 program
     .command('send <room> <message>')
@@ -43,6 +57,7 @@ function getOptions() {
         user: program.user,
         password: program.password,
         server: program.server,
+        encrypted: program.encrypted,
     };
 
     return co(function* () {
@@ -64,6 +79,12 @@ function getOptions() {
     });
 }
 
+/**
+ * Clean-up after the message is sent.
+ */
+function cleanUp() {
+    rmDirRecursively(tmpDir);
+}
 
 /**
  * Commands
@@ -90,13 +111,70 @@ function sendCommand(room, msg) {
                     return;
                 }
 
-                const authedClient = sdk.createClient({
-                    baseUrl: options.server,
-                    accessToken: res.access_token,
-                    userId: res.user_id,
-                });
+                if (! options.encrypted) {
+                    const authedClient = sdk.createClient({
+                        baseUrl: options.server,
+                        accessToken: res.access_token,
+                        userId: res.user_id,
+                    });
 
-                authedClient.sendTextMessage(room, msg);
+                    authedClient.sendTextMessage(room, msg);
+                } else {
+                    const matrixStore = new sdk.MatrixInMemoryStore();
+                    const authedClient = sdk.createClient({
+                        baseUrl: options.server,
+                        accessToken: res.access_token,
+                        userId: res.user_id,
+                        sessionStore: new sdk.WebStorageSessionStore(localStorage),
+                        store: matrixStore,
+                        deviceId: res.device_id,
+                    });
+
+                    authedClient.initCrypto()
+                        .then(function() {
+                            authedClient.sendTextMessage(room, msg, null, cleanUp);
+                        });
+                }
             });
     });
+}
+
+
+/**
+ * Utilities
+ */
+
+function mkdirIfNotExists(directory) {
+    try {
+        fs.mkdirSync(directory);
+    } catch (err) {
+        // Do nothing if directory already exists, exit otherwise
+        if (err.code !== 'EEXIST') {
+            console.log('Could not create directory %s: %s', directory, err.code);
+            process.exit(1);
+        }
+    }
+}
+
+function rmDirRecursively(dirPath) {
+    let files;
+
+    try {
+        files = fs.readdirSync(dirPath);
+    } catch (e) {
+        return;
+    }
+
+   if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+            const filePath = dirPath + '/' + files[i];
+            if (fs.statSync(filePath).isFile()) {
+                fs.unlinkSync(filePath);
+            } else {
+                rmDirRecursively(filePath);
+            }
+        }
+    }
+
+    fs.rmdirSync(dirPath);
 }

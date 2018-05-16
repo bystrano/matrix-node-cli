@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+"use strict";
+
 /**
  * Parse the CLI arguments and dispatch the commands.
  */
-var program = require('commander');
+const program = require('commander');
 
 program
     .version('0.0.1')
@@ -19,7 +21,7 @@ program
 // If no known command, output help
 program
     .command('*')
-    .action(function () {
+    .action(function() {
         program.outputHelp();
     });
 
@@ -28,17 +30,17 @@ program.parse(process.argv);
 
 /**
  * Get the options, asking for input if necessary.
+ *
+ * @return {object} the options
  */
-var options = {};
-
 function getOptions() {
-    var co = require('co'),
-        prompt = require('co-prompt'),
-        options = {
-            user: program.user,
-            password: program.password,
-            server: program.server
-        };
+    const co = require('co');
+    const prompt = require('co-prompt');
+    const options = {
+        user: program.user,
+        password: program.password,
+        server: program.server,
+    };
 
     return co(function* () {
         if (options.user === undefined) {
@@ -63,26 +65,32 @@ function getOptions() {
 /**
  * Commands
  */
-function sendCommand(room, msg) {
 
-    getOptions().then(function (options) {
+/**
+ * Send a message to a room.
+ *
+ * @param {string} room - the roomId
+ * @param {string} msg - the message to send
+ */
+function sendCommand(room, msg) {
+    getOptions().then(function(options) {
         // console.log(options);
         // console.log('send ' + msg + ' to ' + room);
 
-        var sdk = require("matrix-js-sdk");
+        const sdk = require("matrix-js-sdk");
 
         sdk.createClient(options.server)
-            .loginWithPassword(options.user, options.password, function (err, res) {
+            .loginWithPassword(options.user, options.password, function(err, res) {
                 // console.log("On login: Err %j, res %j", err, res);
                 if (err) {
                     console.error(err.toString());
                     return;
                 }
 
-                var authedClient = sdk.createClient({
+                const authedClient = sdk.createClient({
                     baseUrl: options.server,
                     accessToken: res.access_token,
-                    userId: res.user_id
+                    userId: res.user_id,
                 });
 
                 authedClient.sendTextMessage(room, msg);

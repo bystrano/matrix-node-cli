@@ -8,7 +8,7 @@
    Example usage :
 
    #+BEGIN_SRC shell
-     matrix-node-cli --user=USERNAME --password=PASSWORD send <room> <message>
+     matrix-node-cli --server https://matrix.org --user=USERNAME --password=PASSWORD send <room> <message>
    #+END_SRC
 
 *** TODO Use E2E

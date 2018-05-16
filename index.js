@@ -2,6 +2,9 @@
 
 "use strict";
 
+// Load the crypto library
+global.Olm = require('olm');
+
 /**
  * Parse the CLI arguments and dispatch the commands.
  */

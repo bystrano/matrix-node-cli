@@ -249,6 +249,11 @@
       "from": "oauth-sign@>=0.8.2 <0.9.0",
       "resolved": "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.8.2.tgz"
     },
+    "olm": {
+      "version": "2.2.2",
+      "from": "https://matrix.org/packages/npm/olm/olm-2.2.2.tgz",
+      "resolved": "https://matrix.org/packages/npm/olm/olm-2.2.2.tgz"
+    },
     "performance-now": {
       "version": "2.1.0",
       "from": "performance-now@>=2.1.0 <3.0.0",
